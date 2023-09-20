@@ -5,48 +5,42 @@ import App from './App';
 import { createBrowserRouter, RouterProvider} from "react-router-dom";
 import Login from './Login';
 import Cadastro from "./Cadastro";
-import Filmes from './Filmes';
-import EditaFilme from './EditaFilme';
+import Produto from './Produtos';
+import EditaProdutos from './EditaProdutos';
 
-const theme = createTheme({
+//650adfda2a26e4e19b7760e5 id
+
+document.body.style.backgroundColor = "#f6dcff";
+
+const theme = createTheme ({
   palette: {
     mode: 'light',
     primary: {
-      main: '#ff9100',
-      light: '#ffab40',
-      dark: '#f57c00',
-      contrastText: '#7b19ff',
+      main: '#ab47bc',
     },
     secondary: {
-      main: '#7b19ff',
-      light: '#ba8aff',
-      dark: '#6620c5',
-    },
-    text: {
-      primary: '#757575',
-      secondary: '#9e9e9e',
-      hint: '#ffb74d',
-      disabled: '#bdbdbd',
-    },
-    error: {
-      main: '#d50000',
-      contrastText: '#ffffff',
+      main: '#00bfa5',
     },
     background: {
-      default: '#a4a4a4',
+      default: '#f6dcff',
+    },
+    error: {
+      main: '#880e4f',
     },
     warning: {
-      main: '#ffc80d',
+      main: '#d32f2f',
     },
     info: {
-      main: '#0073b3',
+      main: '#1976d2',
     },
     success: {
-      main: '#0ebd3a',
+      main: '#53e658',
     },
-    divider: '#5109b3',
+    divider: '#1a237e',
   }
 });
+  
+
 
 const router = createBrowserRouter([
   {
@@ -62,12 +56,12 @@ const router = createBrowserRouter([
     element: <Cadastro />
   },
   {
-    path: "/filmes",
-    element: <Filmes />
+    path: "/produtos",
+    element: <Produto />
   },
   {
     path: "/edicao/:id",
-    element: <EditaFilme />
+    element: <EditaProdutos />
   }
 ]);
 

@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Container, TextField, Typography } from '@mui/material';
+import { Alert, Box, Button, Container, Grid, TextField, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
 function Cadastro() {
@@ -14,7 +14,7 @@ function Cadastro() {
   function Cadastrar( evento ) {
 
     evento.preventDefault();
-    fetch( process.env.REACT_APP_BACKEND + "users", {
+    fetch( process.env.REACT_APP_BACKEND + "usuarios", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json'
@@ -54,20 +54,26 @@ function Cadastro() {
 
   }, [ cadastro ] );
 
+
+
   return (
-    <Container component="section" maxWidth="sm">
+    <Container component="section" maxWidth="md">
         <Box sx={{ 
             mt: 10,
-            backgroundColor: "#EDEDED",
+            backgroundColor: "#FFFF",
+            fontFamily: 'monospace',
+            color: "#2E0342",
+            borderStyle: 'outset',
             padding: "30px",
             borderRadius: "10px",
             display: "flex",
             flexDirection: "column",
             alignItems: "center"
         }}>
-            <Typography component="h1" variant='h4'>Cadastrar</Typography>
-            { erro && ( <Alert severity="warning" sx={{ mt: 2, mb: 2 }} >Desculpe tente novamente</Alert> ) }
-            { cadastro && ( <Alert severity="success" sx={{ mt: 2, mb: 2 }}>Obrigado por se cadastrar</Alert>)}
+            <Typography component="h2" variant='h4' fontFamily= 'monospace'> Parece que novos leitores estão a caminho... ♡</Typography>
+            <Typography component="span" variant='span' fontFamily= 'monospace'>“As coisas têm vida própria. Tudo é questão de despertar a sua alma.” - Cem anos de solidão</Typography>
+            { erro && ( <Alert severity="warning" sx={{ mt: 2, mb: 2 }} >Desculpe, algo deu errado. Que tal tentar novamente? </Alert> ) }
+            { cadastro && ( <Alert severity="success" sx={{ mt: 2, mb: 2 }}>Agradecemos seu cadastro ♡</Alert>)}
             <Box component="form" onSubmit={Cadastrar}>
                 <TextField 
                   type="text"
@@ -120,6 +126,14 @@ function Cadastro() {
                   required
                 />
                 <Button type="submit" variant="contained" size="large" fullWidth sx={{ mt:2, mb: 2}}>Cadastrar</Button>
+                <Grid container>
+                    <Grid item xs>
+                        Já é um de nossos leitores?
+                    </Grid>
+                    <Grid item>
+                        Voltar à página de login ⮌
+                    </Grid>
+                </Grid>
             </Box>
         </Box>
     </Container>

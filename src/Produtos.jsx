@@ -1,93 +1,71 @@
-import { Box, Container, TextField, Button, Alert } from "@mui/material";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Alert, Box, Button, Container, Grid, TextField, Typography } from '@mui/material';
+import React, { useState } from 'react'
 
-function EditaFilme() {
+function Livros() {
 
-    const { id } = useParams();
     const [titulo, setTitulo] = useState("");
     const [descricao, setDescricao] = useState("");
     const [ano, setAno] = useState("");
     const [duracao, setDuracao] = useState("");
     const [categoria, setCategoria] = useState("");
     const [imagem, setImagem] = useState("");
-    const [editar, setEditar] = useState(false);
+    const [cadastro, setCadastro] = useState(false);
     const [erro, setErro] = useState(false);
 
-    useEffect( () => {
-        fetch( process.env.REACT_APP_BACKEND + "filmes/" + id, {
-            method: "GET",
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .then((resposta) => resposta.json())
-        .then((json) => {
-            if( !json.status ) {
-                setTitulo( json.titulo );
-                setDescricao( json.descricao );
-                setAno( json.ano );
-                setDuracao( json.duracao);
-                setImagem( json.imagem );
-                setCategoria( json.categoria );
-            } else {
-                setErro( "Filme não encontrado" );
-            }
-        })
-        .catch((erro) => { setErro(true) })
-    }, [] );
 
-    function Editar( evento ) {
+    function Cadastrar(evento) {
         evento.preventDefault();
-
-        fetch( process.env.REACT_APP_BACKEND + "filmes", {
-            method: "PUT",
+        fetch( process.env.REACT_APP_BACKEND + "produtos", {
+            method: "POST",
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(
                 {
-                    id: id,
                     titulo: titulo,
                     descricao: descricao,
                     ano: ano,
                     duracao: duracao,
                     imagem: imagem,
-                    categoria: categoria
+                    categoria: categoria,
+                    usuario: localStorage.getItem( "usuario" )
                 }
             )
         })
-        .then((resposta) => resposta.json())
-        .then((json) => {
+            .then((resposta) => resposta.json())
+            .then((json) => {
 
-            if (json._id) {
-                setEditar(true);
-                setErro( false );
-            } else {
-                setErro(true);
-                setEditar( "Não foi possível editar o filme" );
-            }
-        })
-        .catch((erro) => { setErro( "Erro ao processar a requisição") })
+                if (json._id) {
+                    setCadastro(true);
+                    setErro( false );
+                } else {
+                    setErro(true);
+                    setCadastro( false );
+                }
+            })
+            .catch((erro) => { setErro(true) })
+
     }
-
-
 
 
     return (
         <Container component="section" maxWidth="sm">
             <Box sx={{
                 mt: 10,
-                backgroundColor: "#EDEDED",
+                backgroundColor: "#FFF",
+                fontFamily: 'monospace',
                 padding: "30px",
                 borderRadius: "10px",
+                borderStyle: 'outset',
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center"
             }}>
-                { erro && ( <Alert severity="warning">{erro}</Alert>)}
-                { editar && ( <Alert severity="success">Filme editado com sucesso</Alert>)}
-                <Box component="form" onSubmit={Editar}>
+                 <Typography component="h2" variant='h4'fontFamily= 'monospace' >Novos livros em mente? ♡</Typography>
+                 <Typography component="span" variant='span' fontFamily= 'monospace'>“O amor não força nada, ao contrário, ele abre caminhos.” - A cabana</Typography>
+                { erro && (<Alert severity="warning">Ops! PArece que este livro já foi cadastrado. Que tal tentar outro?</Alert>) }
+                { cadastro && ( <Alert severity="success">Sucesso! Agradecemos seu cadastro :)</Alert> )}
+                <Box component="form" onSubmit={Cadastrar}>
                     <TextField
                         type="text"
                         label="Título"
@@ -100,7 +78,7 @@ function EditaFilme() {
                     />
                     <TextField
                         type="text"
-                        label="Descrição"
+                        label="Sinopse"
                         variant="filled"
                         margin="normal"
                         value={descricao}
@@ -109,8 +87,8 @@ function EditaFilme() {
                         required
                     />
                     <TextField
-                        type="number"
-                        label="Ano"
+                        type="text"
+                        label="Número de Páginas"
                         variant="filled"
                         margin="normal"
                         value={ano}
@@ -120,7 +98,7 @@ function EditaFilme() {
                     />
                     <TextField
                         type="text"
-                        label="Duração"
+                        label="Autor(a)"
                         variant="filled"
                         margin="normal"
                         value={duracao}
@@ -148,12 +126,16 @@ function EditaFilme() {
                         fullWidth
                         required
                     />
-                    <Button type="submit" variant="contained" fullWidth sx={{ mt: 2, mb: 2 }} >Editar</Button>
+                    <Button type="submit" variant="contained" fullWidth sx={{ mt: 2, mb: 2 }} >Cadastrar</Button>
+                    <Grid container>
+                    <Grid item xs>
+                        Voltar ao mural de livros ⮌
+                    </Grid>
+                </Grid>
                 </Box>
-
             </Box>
         </Container>
     )
 }
 
-export default EditaFilme;
+export default Livros;

@@ -19,7 +19,6 @@ function Login() {
   useEffect( () => {
 
     if( login ) {
-        localStorage.setItem( "usuario" , JSON.stringify( {email: email } ) );
         setEmail( "" );
         setSenha( "" );
         navigate( "/" );
@@ -46,8 +45,10 @@ function Login() {
     .then( ( json ) => {
 
         if( json.user ) {
+            localStorage.setItem( "usuario" , JSON.stringify( json.user._id) );
             setLogin( true );
         } else {
+            localStorage.removeItem( "usuario" );
             setErro( true );
         }
     } )
@@ -56,20 +57,24 @@ function Login() {
   }
 
   return (
-    <Container component="section" maxWidth="xs" >
+    <Container component="section" maxWidth="md" >
         <Box 
         sx={{ 
             mt: 10,
-            backgroundColor: "#EDEDED",
+            backgroundColor: "#FFFF",
+            fontFamily: 'monospace',
+            color: "#2E0342",
             padding: "30px",
             borderRadius: "10px",
+            borderStyle: 'outset',
             display: "flex",
             flexDirection: "column",
             alignItems: "center"
         }}
         >
-            <Typography component="h1" variant='h4'>Entrar</Typography>
-            { erro && ( <Alert severity="warning" sx={{ mt: 2, mb: 2 }}>Revise seus dados e tente novamente</Alert> ) }
+            <Typography component="h2" variant='h4' fontFamily= 'monospace'>Já esteve por aqui? ♡</Typography>
+            <Typography component="span" variant='span' fontFamily= 'monospace'>“Tu te tornas eternamente responsável por aquilo que cativas” - O Pequeno Príncipe</Typography>
+            { erro && ( <Alert severity="warning" sx={{ mt: 2, mb: 2 }}>Ops! Algo parece errado. Que tal revisar seus dados?</Alert> ) }
             <Box component="form" onSubmit={Autenticar}>
                 <TextField 
                   type="email"
@@ -91,15 +96,15 @@ function Login() {
                 />
                 <FormControlLabel
                     control={ <Checkbox value={lembrar} name="lembrar" onChange={(e) => setLembrar( !lembrar ) } />}
-                    label="Lembrar-me"
+                    label ="Lembrar-me"
                 />
                 <Button type="submit" variant="contained" fullWidth sx={ { mt: 2, mb: 2 }} size="large">Login</Button>
                 <Grid container>
                     <Grid item xs>
-                        Esqueci a senha
+                       Esqueci minha senha
                     </Grid>
                     <Grid item>
-                        Cadastrar
+                        Ir para cadastro ⮎
                     </Grid>
                 </Grid>
             </Box>

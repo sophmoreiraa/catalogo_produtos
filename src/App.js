@@ -1,64 +1,69 @@
 import { Avatar, Button, Container } from "@mui/material";
 import { useEffect, useState } from "react";
-import Filme from "./components/Filme";
-
+import Produto from './components/Produtos';
+import MenuResponsivo from "./components/MenuResponsivo";
 
 
 function App() {
 
-    const [ filmes, setFilmes ] = useState();
+    const [ produtos, setProdutos ] = useState();
     const [ erro, setErro ] = useState();
 
     useEffect(() => {
-        fetch( process.env.REACT_APP_BACKEND + "filmes", {
+
+        const usuario = localStorage.getItem( "usuario");
+   
+
+        fetch( process.env.REACT_APP_BACKEND + "produtos/" + usuario , {
             headers: {
                 'Content-Type': 'application/json'
             }
         } )
         .then( (resposta) => resposta.json() )
-        .then( ( json ) => setFilmes( json ) )
+        .then( ( json ) => setProdutos( json ) )
         .catch( ( erro ) => { setErro( true ) } )
     }, [])
 
     function Excluir( evento, id ) {
         evento.preventDefault();
-        fetch( process.env.REACT_APP_BACKEND + "filmes" , {
+        fetch( process.env.REACT_APP_BACKEND + "produtos" , {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                id: id
+                id: id,
+                usuario: localStorage.getItem( "usuario")
+                
             })
         } )
         .then( ( resposta ) => resposta.json() )
         .then( ( json ) => {
-            const novaLista = filmes.filter( (filme ) => filme._id !== id );
-            setFilmes( novaLista );
+            const novaLista = produtos.filter( ( produtos ) => produtos._id !== id );
+            setProdutos( novaLista );
         })
         .catch( ( error ) => setErro( true ) )
     }
-
     return (
         <>
-            <h1>Filmes</h1>
+        <MenuResponsivo />
             <Container sx={{ 
                 display: "flex" ,
                 flexFlow: "row",
                 flexWrap: "wrap",
                 gap: "2rem"
             }}>
-            { filmes && (
-                filmes.map( (filme, index ) => ( 
-                    <Filme
-                        imagem={filme.imagem}
-                        titulo={filme.titulo}
-                        descricao={filme.descricao}
-                        categoria={filme.categoria}
-                        ano={filme.ano}
-                        duracao={filme.duracao}
-                        excluir={ (e) => Excluir( e, filme._id ) }
-                        id={filme._id}
+            { produtos && (
+                produtos.map( (produtos, index ) => ( 
+                    <Produto
+                        imagem={produtos.imagem}
+                        titulo={produtos.titulo}
+                        descricao={produtos.descricao}
+                        categoria={produtos.categoria}
+                        ano={produtos.ano}
+                        autor={produtos.autor}
+                        excluir={ (e) => Excluir( e, produtos._id ) }
+                        id={produtos._id}
                     />
                 ) )
             ) }

@@ -1,9 +1,6 @@
 import { Card, CardActionArea, CardContent, CardMedia, Grid, Typography, Link } from "@mui/material";
 
-
-
-function Filme(props) {
-
+function Produtos(props) {
     return (
         <Card sx={{ maxWidth: 345 }}>
             <CardActionArea>
@@ -28,7 +25,7 @@ function Filme(props) {
                             <span>{props.ano}</span>
                         </Grid>
                         <Grid item xs>
-                            <span>{props.duracao}</span>
+                            <span>{props.autor}</span>
                         </Grid>
                     </Grid>
                 </CardContent>
@@ -40,10 +37,8 @@ function Filme(props) {
                 <Grid item xs={6}>
                     <Link href={ "edicao/" + props.id }>Editar</Link>
                 </Grid>
-            </Grid>
-            
-            
+            </Grid>            
         </Card>
     )
 }
-export default Filme;
+export default Produtos;
